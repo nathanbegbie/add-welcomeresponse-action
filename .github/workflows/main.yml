@@ -1,0 +1,18 @@
+on: [push]
+
+jobs:
+  auto-response:
+    runs-on: ubuntu-latest
+    name: Self Referential
+    steps:
+      # To use this repository's private action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Local Action
+        uses: ./ # Uses an action in the root directory
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          respondableId: ${{ github.event.issue.node_id }}
+          response: "We love dogfooding!"
+          author: ${{ github.event.issue.user.login }}
